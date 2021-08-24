@@ -14,7 +14,18 @@ public class ItemRepo
 
     public void putItem(Item item)
     {
-        items.add(item);
+        Item    itemToBeAdded   =   getItemById(item.getId());
+        
+        if (itemToBeAdded == null)
+        {
+            items.add(item);
+        }
+        else
+        {
+            itemToBeAdded.setName(item.getName());
+        }
+        
+        System.out.println(items);
     }
 
     public void removeItemById(int itemId)
