@@ -1,4 +1,4 @@
-package troubleshooting.models;
+package troubleshooting.question1.models;
 
 /**
  *

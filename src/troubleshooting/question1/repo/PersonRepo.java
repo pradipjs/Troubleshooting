@@ -1,10 +1,10 @@
-package troubleshooting.repo;
+package troubleshooting.question1.repo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import troubleshooting.models.Person;
+import troubleshooting.question1.models.Person;
 import troubleshooting.utils.Utils;
 
 /**

@@ -1,4 +1,4 @@
-package troubleshooting.models;
+package troubleshooting.question1.models;
 
 /**
  * Base class for Student & Staff. It has common properties i.e. Name, Address, School & Class

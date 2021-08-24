@@ -1,4 +1,4 @@
-package troubleshooting;
+package troubleshooting.question1;
 
 /**
  * 2. Looking at the above defined classes we can notice that there are a lot in common between them, is such a redundancy a bad or good practice? why?

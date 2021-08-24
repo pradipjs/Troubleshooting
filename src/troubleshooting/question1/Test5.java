@@ -1,8 +1,8 @@
-package troubleshooting;
+package troubleshooting.question1;
 
-import troubleshooting.models.Staff;
-import troubleshooting.models.Student;
-import troubleshooting.repo.PersonRepo;
+import troubleshooting.question1.models.Staff;
+import troubleshooting.question1.models.Student;
+import troubleshooting.question1.repo.PersonRepo;
 
 /**
  *
