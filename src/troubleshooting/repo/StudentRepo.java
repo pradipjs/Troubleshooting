@@ -3,6 +3,7 @@ package troubleshooting.repo;
 import java.util.ArrayList;
 import java.util.List;
 import troubleshooting.models.Student;
+import troubleshooting.utils.Utils;
 
 /**
  *
@@ -19,6 +20,14 @@ public class StudentRepo
 
     public Student searchByName(String name)
     {
-        // TODO
+        for (Student student : students)
+        {
+            if (Utils.equalsIgnoreCase(name, student.getName()))
+            {
+                return student;
+            }
+        }
+        
+        return null;
     }
 }

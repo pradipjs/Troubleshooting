@@ -3,6 +3,7 @@ package troubleshooting.repo;
 import java.util.ArrayList;
 import java.util.List;
 import troubleshooting.models.Staff;
+import troubleshooting.utils.Utils;
 
 /**
  *
@@ -19,6 +20,14 @@ public class StaffRepo
 
     public Staff searchByName(String name)
     {
-        // TODO
+        for (Staff staff : staffs)
+        {
+            if (Utils.equalsIgnoreCase(name, staff.getName()))
+            {
+                return staff;
+            }
+        }
+        
+        return null;
     }
 }
