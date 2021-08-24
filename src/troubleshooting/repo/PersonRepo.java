@@ -1,33 +1,25 @@
 package troubleshooting.repo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import troubleshooting.models.Person;
-import troubleshooting.utils.Utils;
 
 /**
  *
  * @author Pradip J. Sabhadiya<pradip@oneit.com.au>
  */
-public class PersonRepo<T extends Person>
+public class PersonRepo
 {
-    private List<T> data    = new ArrayList<>();
+    private Map<Class<? extends Person>, List<? extends Person>>  data    =   new HashMap<>();
 
-    public void add(T t)
+    public <T extends Person> void addPerson(T person)
     {
-        data.add(t);
-    }
-    
-    public T searchByName(String name)
-    {
-        for (T t : data)
-        {
-            if (Utils.equalsIgnoreCase(name, t.getName()))
-            {
-                return t;
-            }
-        }
+        List<T> personsList =   (List<T>) data.getOrDefault(person.getClass(), new ArrayList<T>());
         
-        return null;
+        personsList.add(person);
+        
+        data.put(person.getClass(), personsList);
     }
 }

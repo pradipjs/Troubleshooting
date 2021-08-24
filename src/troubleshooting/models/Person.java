@@ -50,4 +50,10 @@ public class Person
     {
         this.clazz = clazz;
     }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }
