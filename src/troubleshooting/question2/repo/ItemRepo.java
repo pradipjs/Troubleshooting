@@ -19,11 +19,24 @@ public class ItemRepo
 
     public void removeItemById(int itemId)
     {
-        // TODO
+        Item    item    =   getItemById(itemId);
+        
+        if (item != null)
+        {
+            items.remove(item);
+        }
     }
 
     public Item getItemById(int itemId)
     {
-        // TODO
+        for (Item item : items)
+        {
+            if (item.getId() == itemId)
+            {
+                return item;
+            }
+        }
+        
+        return null;
     }
 }
