@@ -1,12 +1,15 @@
 package troubleshooting.question2.repo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import troubleshooting.question2.listeners.Listener;
 import troubleshooting.question2.models.Item;
 
 /**
@@ -16,6 +19,12 @@ import troubleshooting.question2.models.Item;
 public class ItemRepo
 {
     private Set<Item> items = new HashSet<>();
+    private List<Listener> listerners = new ArrayList<>();
+    
+    public void addListener(Listener listener)
+    {
+        listerners.add(listener);
+    }
     
     private Runnable putItemRunnable(Item item) throws InterruptedException
     {
@@ -43,7 +52,6 @@ public class ItemRepo
 
     private synchronized void actualPutItem(Item item)
     {
-        System.out.println("Adding item :: " + item);
         try
         {
             Thread.sleep(2000);
@@ -58,12 +66,16 @@ public class ItemRepo
         if (itemToBeAdded == null)
         {
             items.add(item);
-        } else
+        }
+        else
         {
             itemToBeAdded.setName(item.getName());
         }
         
-        System.out.println("Item added :: " + item);
+        for (Listener listener : listerners)
+        {
+            listener.itemPut(item);
+        }
     }
 
     public void removeItemById(int itemId)
@@ -73,6 +85,11 @@ public class ItemRepo
         if (item != null)
         {
             items.remove(item);
+            
+            for (Listener listener : listerners)
+            {
+                listener.itemRemoved(item);
+            }
         }
     }
 
