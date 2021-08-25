@@ -5,7 +5,7 @@ package troubleshooting.mysql;
  * 
  * @author Pradip J. Sabhadiya<pradip@oneit.com.au>
  */
-public class Test12
+public class Test2
 {
     public static void main(String[] args)
     {
