@@ -3,6 +3,8 @@ package troubleshooting.question2.repo;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import troubleshooting.question2.models.Item;
@@ -14,32 +16,42 @@ import troubleshooting.question2.models.Item;
 public class ItemRepo
 {
     private Set<Item> items = new HashSet<>();
+    
+    private Runnable putItemRunnable(Item item) throws InterruptedException
+    {
+        return () -> { actualPutItem(item); };
+    }
 
     public void putItem(Item item, Callable<Void> func) throws InterruptedException, Exception
     {
-        Runnable r = () ->
-        {
-            try
-            {
-                actualPutItem(item);
-            }
-            catch (InterruptedException ex)
-            {
-                Logger.getLogger(ItemRepo.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        };
+        Thread  thread  =   new Thread(putItemRunnable(item));
         
-        Thread t    =   new Thread(r);
-        t.start();
-        t.join();
+        thread.start();
+        thread.join();
         
         func.call();
     }
-
-    private synchronized void actualPutItem(Item item) throws InterruptedException
+    
+    public CompletionStage<Void> putItemAlt(Item item)
     {
-        // Simulate an expensive operation
-        Thread.sleep(2000);
+        CompletionStage<Void>   stage   =   CompletableFuture.runAsync(() -> { actualPutItem(item); });
+        
+        ((CompletableFuture) stage).join();
+        
+        return stage;
+    }
+
+    private synchronized void actualPutItem(Item item)
+    {
+        System.out.println("Adding item :: " + item);
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException ex)
+        {
+            Logger.getLogger(ItemRepo.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         Item itemToBeAdded = getItemById(item.getId());
 
@@ -50,6 +62,8 @@ public class ItemRepo
         {
             itemToBeAdded.setName(item.getName());
         }
+        
+        System.out.println("Item added :: " + item);
     }
 
     public void removeItemById(int itemId)
