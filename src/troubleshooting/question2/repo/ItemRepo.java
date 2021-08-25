@@ -1,5 +1,6 @@
 package troubleshooting.question2.repo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,18 @@ public class ItemRepo
     
     public void addListener(Listener listener)
     {
-        listerners.add(listener);
+        try (listener)
+        {
+            listerners.add(listener);
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        finally
+        {
+            listerners.remove(listener);
+        }
     }
     
     private Runnable putItemRunnable(Item item) throws InterruptedException

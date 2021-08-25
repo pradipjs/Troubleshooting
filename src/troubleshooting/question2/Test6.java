@@ -1,5 +1,6 @@
 package troubleshooting.question2;
 
+import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 import troubleshooting.question2.listeners.Listener;
 import troubleshooting.question2.models.Item;
@@ -13,22 +14,29 @@ public class Test6
 {
     public static void main(String[] args)
     {
-        ItemRepo repo = new ItemRepo();
-        
-        repo.addListener(new Listener()
+        ItemRepo    repo        =   new ItemRepo();
+        Listener    listener    =   new Listener()
         {
             @Override
             public void itemPut(Item item)
             {
-                System.out.println("Listender handled item put.");
+                System.out.println("Listener handled item put.");
             }
 
             @Override
             public void itemRemoved(Item item)
             {
-                System.out.println("Listender handled item removed.");
+                System.out.println("Listener handled item removed.");
             }
-        });
+
+            @Override
+            public void close() throws IOException
+            {
+                System.out.println("Listener closed");
+            }
+        };
+        
+        repo.addListener(listener);
         
         CompletionStage<Void>   itemToBeAdded   =   repo.putItemAlt(new Item(1001, "Joe"));
         itemToBeAdded.thenRun(() ->
